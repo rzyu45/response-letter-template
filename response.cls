@@ -6,7 +6,6 @@
 \LoadClass[twoside]{article}
 
 % 宏包加载
-\RequirePackage{newtxmath}
 \RequirePackage[style=ieee]{biblatex}
 \RequirePackage{hyperref}
 \RequirePackage{tabularx}
@@ -30,6 +29,7 @@
 \RequirePackage{soul}
 \RequirePackage{physics}
 \RequirePackage{amsmath}
+\RequirePackage{amssymb}
 % \RequirePackage{ctex}
 \RequirePackage[margin=1.25in]{geometry}
 \RequirePackage{fancyhdr}
