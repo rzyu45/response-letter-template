@@ -34,6 +34,17 @@
 \RequirePackage[margin=1.25in]{geometry}
 \RequirePackage{fancyhdr}
 
+% Theorem-like environments and a lightweight IEEEproof clone so that
+% response letters can include formal statements / proofs without
+% pulling in amsthm (which conflicts with response.cls's \openbox).
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+\newtheorem{corollary}{Corollary}
+\newtheorem{definition}{Definition}
+\newtheorem{remark}{Remark}
+\newenvironment{IEEEproof}{\par\noindent\textit{Proof.}\quad\ignorespaces}{\hfill$\blacksquare$\par\medskip}
+
 % 通用设置
 \sisetup{detect-all}
 \allowdisplaybreaks
