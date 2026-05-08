@@ -114,10 +114,15 @@
 }
 
 \newcommand{\responsetitle}{Response \ifnum\value{Reviewer}>0 \theReviewer-\theComment\else \theComment\fi}
-\newenvironment{Response}{%
+\newenvironment{Response}[1][]{%
+  \def\Resp@Subtitle{#1}%
   \vspace{2ex}\noindent\bfseries\large\responsetitle%
+  \ifx\Resp@Subtitle\@empty\else\unskip\ : \Resp@Subtitle\fi%
   \mdseries\par\begin{spacing}{1.4}%
-  \phantomsection\addcontentsline{toc}{subsection}{\responsetitle}%
+  \phantomsection
+  \addcontentsline{toc}{subsection}{%
+    \responsetitle\ifx\Resp@Subtitle\@empty\else\ : \Resp@Subtitle\fi%
+  }%
 }{%
   \end{spacing}\vspace{2ex}\par%
 }
