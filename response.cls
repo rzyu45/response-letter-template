@@ -124,13 +124,25 @@
   \end{formal}\end{spacing}\vspace{2ex}\par%
 }
 
-% Intro env: like Comment but does NOT increment the Comment counter.
-% Use for the reviewer's / editor's overall summary block at the top of each
-% section, so that numbered Comments start from 1 (not 2).
+% Intro env: like Comment but does NOT increment the Comment counter and
+% does NOT print a numbered title. Use for the reviewer's / editor's overall
+% summary block at the top of each section, so that numbered Comments start
+% from 1 (not 2).
 \newenvironment{Intro}{%
-  \vspace{2ex}\par\begin{spacing}{1.4}\mdseries\begin{formal}%
+  \vspace{2ex}\noindent\bfseries\large Comment\mdseries%
+  \par\begin{spacing}{1.4}\begin{formal}%
 }{%
   \end{formal}\end{spacing}\vspace{2ex}\par%
+}
+
+% IntroResponse env: like Response but with a title-less ``Response'' header
+% (no number) for the intro reply that goes with an Intro block. Keeps the
+% Comment counter untouched so that the first numbered Response is N-1.
+\newenvironment{IntroResponse}{%
+  \vspace{2ex}\noindent\bfseries\large Response\mdseries%
+  \par\begin{spacing}{1.4}%
+}{%
+  \end{spacing}\vspace{2ex}\par%
 }
 
 \newcommand{\responsetitle}{Response \ifnum\value{Reviewer}>0 \theReviewer-\theComment\else \theComment\fi}
