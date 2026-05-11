@@ -6,6 +6,7 @@
 \LoadClass[twoside]{article}
 
 % 宏包加载
+\RequirePackage{etoolbox}
 \RequirePackage[style=ieee]{biblatex}
 \RequirePackage{hyperref}
 \RequirePackage{tabularx}
@@ -54,11 +55,21 @@
 \newcounter{Reviewer}
 \newcounter{Comment}[Reviewer]
 \newcounter{Response}[Reviewer]
+\newcounter{ModiNumber}[Reviewer]
 
 % 编号格式重定义
 \renewcommand{\theequation}{R.\arabic{equation}}
 \renewcommand{\thefigure}{R-\arabic{figure}}
 \renewcommand{\thetable}{R-\arabic{table}}
+
+% Font family used by ModiPaste — matches the manuscript body font.
+% Can be overridden in the document preamble with
+% \newfontfamily\manuscriptfont{<font name>} if needed.
+\AtEndPreamble{%
+  \@ifundefined{manuscriptfont}{%
+    \newfontfamily\manuscriptfont{Times New Roman}%
+  }{}%
+}
 
 % 颜色定义
 \definecolor{redshade1}{rgb}{1,0.8,0.8}
@@ -113,6 +124,15 @@
   \end{formal}\end{spacing}\vspace{2ex}\par%
 }
 
+% Intro env: like Comment but does NOT increment the Comment counter.
+% Use for the reviewer's / editor's overall summary block at the top of each
+% section, so that numbered Comments start from 1 (not 2).
+\newenvironment{Intro}{%
+  \vspace{2ex}\par\begin{spacing}{1.4}\mdseries\begin{formal}%
+}{%
+  \end{formal}\end{spacing}\vspace{2ex}\par%
+}
+
 \newcommand{\responsetitle}{Response \ifnum\value{Reviewer}>0 \theReviewer-\theComment\else \theComment\fi}
 \newenvironment{Response}[1][]{%
   \def\Resp@Subtitle{#1}%
@@ -127,17 +147,45 @@
   \end{spacing}\vspace{2ex}\par%
 }
 
-\newcommand{\modificationtitle}{Modification \ifnum\value{Reviewer}>0 \theReviewer-\theComment\else \theResponse\fi}
+% Modi label: uses ModiNumber counter (resets per Reviewer), so each
+% reviewer's modifications are numbered 1, 2, 3, ... and the editor's
+% modifications are numbered 1, 2, 3, ....
+\newcommand{\modificationtitle}{%
+  Modification \ifnum\value{Reviewer}>0 \theReviewer-\theModiNumber\else \theModiNumber\fi%
+}
+
+% Modi env: bold heading, no frame (so multicols inside can break across pages
+% and start mid-page). Visual contrast lives only on the location paragraph
+% via the \modiloc{...} helper.
 \newenvironment{Modi}{%
+  \stepcounter{ModiNumber}%
   \vspace{2ex}\noindent\bfseries\large\modificationtitle%
-  \mdseries\par\begin{spacing}{1.4}\begin{redframe}%
+  \mdseries\par\nopagebreak\begin{spacing}{1.4}%
   \phantomsection\addcontentsline{toc}{subsection}{\modificationtitle}%
 }{%
-  \end{redframe}\end{spacing}\vspace{2ex}\par%
+  \end{spacing}\vspace{2ex}\par%
+}
+
+% ModiPaste: wrapper for manuscript-paste content inside a Modi block.
+% Sets Times New Roman + footnotesize + two-column flow. Must be used
+% inside a Modi env.
+\newenvironment{ModiPaste}{%
+  \manuscriptfont\footnotesize
+  \begin{multicols}{2}%
+}{%
+  \end{multicols}%
+}
+
+% Location-paragraph helper: bold Maroon text with a LightCoral left bar.
+% Use as \modiloc{Page X, Section Y.} inside a ModiPaste block.
+\newcommand{\modiloc}[1]{%
+  \par\noindent\hspace*{12pt}%
+  \llap{\textcolor{LightCoral}{\rule[-2pt]{3pt}{\baselineskip}}\hspace{9pt}}%
+  \textbf{\textcolor{Maroon}{#1}}\par
 }
 
 % 框体环境配置
-\tcbuselibrary{breakable}
+\tcbuselibrary{breakable,skins}
 \newtcolorbox{Original}[1]{
     colback=red!5!white,
     colframe=red!75!black,
