@@ -7,6 +7,7 @@
 
 % 宏包加载
 \RequirePackage{etoolbox}
+\RequirePackage{multicol}
 \RequirePackage[style=ieee]{biblatex}
 \RequirePackage{hyperref}
 \RequirePackage{tabularx}
