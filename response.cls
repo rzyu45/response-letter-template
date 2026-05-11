@@ -178,10 +178,11 @@
 }
 
 % ModiPaste: wrapper for manuscript-paste content inside a Modi block.
-% Sets Times New Roman + footnotesize + two-column flow. Must be used
-% inside a Modi env.
+% Sets Times New Roman at the surrounding body fontsize (normalsize) and
+% two-column flow. Must be used inside a Modi env. Figures/tables inside
+% should use minipage instead of float envs so multicols can balance.
 \newenvironment{ModiPaste}{%
-  \manuscriptfont\footnotesize
+  \manuscriptfont\small
   \begin{multicols}{2}%
 }{%
   \end{multicols}%
