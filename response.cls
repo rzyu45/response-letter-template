@@ -56,7 +56,6 @@
 \newcounter{Reviewer}
 \newcounter{Comment}[Reviewer]
 \newcounter{Response}[Reviewer]
-\newcounter{ModiNumber}[Reviewer]
 
 % 编号格式重定义
 \renewcommand{\theequation}{R.\arabic{equation}}
@@ -148,18 +147,17 @@
   \end{spacing}\vspace{2ex}\par%
 }
 
-% Modi label: uses ModiNumber counter (resets per Reviewer), so each
-% reviewer's modifications are numbered 1, 2, 3, ... and the editor's
-% modifications are numbered 1, 2, 3, ....
+% Modi label: shares the same Comment counter as the Response above, so
+% Modification N-K matches Response N-K. For the editor (Reviewer = 0),
+% the label is "Modification K" without a reviewer prefix.
 \newcommand{\modificationtitle}{%
-  Modification \ifnum\value{Reviewer}>0 \theReviewer-\theModiNumber\else \theModiNumber\fi%
+  Modification \ifnum\value{Reviewer}>0 \theReviewer-\theComment\else \theComment\fi%
 }
 
 % Modi env: bold heading, no frame (so multicols inside can break across pages
 % and start mid-page). Visual contrast lives only on the location paragraph
 % via the \modiloc{...} helper.
 \newenvironment{Modi}{%
-  \stepcounter{ModiNumber}%
   \vspace{2ex}\noindent\bfseries\large\modificationtitle%
   \mdseries\par\nopagebreak\begin{spacing}{1.4}%
   \phantomsection\addcontentsline{toc}{subsection}{\modificationtitle}%
